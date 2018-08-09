@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import com.oracle.eloqua.appframework.enums.RecordStatus;
 
 @Entity
-public class CampaignEntry {
+public class SMSActivity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +21,7 @@ public class CampaignEntry {
 	private RecordStatus status;
 	private String instanceId;
 
-	public CampaignEntry() {
+	public SMSActivity() {
 	}
 
 	@Override

@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.oracle.eloqua.appframework.entity.CampaignEntry;
+import com.oracle.eloqua.appframework.entity.SMSActivity;
 import com.oracle.eloqua.appframework.enums.RecordStatus;
 
-public interface CampaignEntryRepository extends CrudRepository<CampaignEntry, Long> {
+public interface CampaignEntryRepository extends CrudRepository<SMSActivity, Long> {
 
-	List<CampaignEntry> findByInstanceIdAndStatus(String instanceId, RecordStatus status);
+	List<SMSActivity> findByInstanceIdAndStatus(String instanceId, RecordStatus status);
 }

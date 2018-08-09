@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oracle.eloqua.appframework.dto.WebHookParams;
-import com.oracle.eloqua.appframework.entity.CampaignEntry;
+import com.oracle.eloqua.appframework.entity.SMSActivity;
 import com.oracle.eloqua.appframework.enums.RecordStatus;
 import com.oracle.eloqua.appframework.repository.CampaignEntryRepository;
 
@@ -30,7 +30,7 @@ public class FeederService extends AbstractService {
 		try {
 			log.debug("Checking entries for instance: " + instanceId);
 
-			List<CampaignEntry> ceList = campaignEntryRepository.findByInstanceIdAndStatus(instanceId,
+			List<SMSActivity> ceList = campaignEntryRepository.findByInstanceIdAndStatus(instanceId,
 					RecordStatus.NEW);
 			if (ceList.size() > 0) {
 				doBulkUpload(ceList);
@@ -41,13 +41,13 @@ public class FeederService extends AbstractService {
 		}
 	}
 
-	private void doBulkUpload(List<CampaignEntry> ceList) throws JSONException {
+	private void doBulkUpload(List<SMSActivity> ceList) throws JSONException {
 
 		JSONObject bulkApiDefinition = bulkApiDefinition("complete");
 
 		JSONArray bulkApiPayload = new JSONArray();
 
-		for (CampaignEntry campaignEntry : ceList) {
+		for (SMSActivity campaignEntry : ceList) {
 			campaignEntry.setStatus(RecordStatus.IN_PROGRESS);
 			campaignEntryRepository.save(campaignEntry);
 			log.info("Processing campaign entry: " + campaignEntry.toString());
@@ -60,7 +60,7 @@ public class FeederService extends AbstractService {
 
 		eloquaBulkApi.doUpload(bulkApiDefinition.toString(), bulkApiPayload.toString(), "contacts/imports", installId);
 
-		for (CampaignEntry campaignEntry : ceList) {
+		for (SMSActivity campaignEntry : ceList) {
 			campaignEntry.setStatus(RecordStatus.COMPLETE);
 			campaignEntryRepository.save(campaignEntry);
 
